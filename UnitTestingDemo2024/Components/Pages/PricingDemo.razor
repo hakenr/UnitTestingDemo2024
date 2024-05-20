@@ -1,0 +1,41 @@
+﻿@page "/pricing-demo"
+@using UnitTestingDemo2024.Models.Sales
+@using UnitTestingDemo2024.Repositories.Sales
+@using UnitTestingDemo2024.Services.Sales
+@inject ICustomerRepository CustomerRepository
+@inject IProductRepository ProductRepository
+@inject IPriceResolver PriceResolver
+
+<h3>PriceResolverDemo</h3>
+
+<div style="max-width: 400px">
+	<HxSelect Label="Customer" Data="_customers" @bind-Value="_selectedCustomer" @bind-Value:after="CalculatePrice" TextSelector="c => c.Name" NullText="-select-" />
+	<HxSelect Label="Product" Data="_products" @bind-Value="_selectedProduct" @bind-Value:after="CalculatePrice" TextSelector="p => p.ProductNumber" NullText="-select-" />
+
+	<HxFormValue Label="Price" Value="@_price?.ToString("n")" InputGroupStartText="$" CssClass="mt-5" />
+</div>
+
+@code {
+	private Customer _selectedCustomer;
+	private Product _selectedProduct;
+	private decimal? _price;
+
+	private IEnumerable<Customer> _customers;
+	private IEnumerable<Product> _products;
+
+	protected override void OnInitialized()
+	{
+		_customers = CustomerRepository.GetAll();
+		_products = ProductRepository.GetAll();
+	}
+
+	private void CalculatePrice()
+	{
+		if ((_selectedCustomer == null) || (_selectedProduct == null))
+		{
+			_price = null;
+			return;
+		}
+		_price = PriceResolver.GetPrice(_selectedCustomer, _selectedProduct);
+	}
+}
