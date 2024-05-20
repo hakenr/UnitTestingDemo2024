@@ -31,8 +31,15 @@ public partial class GenericError : IAsyncDisposable
 
 	protected override async Task OnInitializedAsync()
 	{
-		await EnsureJsModuleAsync();
-		_traceId = await _jsModule.InvokeAsync<string>("getTraceID");
+		try
+		{
+			await EnsureJsModuleAsync();
+			_traceId = await _jsModule.InvokeAsync<string>("getTraceID");
+		}
+		catch (Exception)
+		{
+			// NOOP (SSR)
+		}
 	}
 
 	private void HandleRestartClick()
@@ -42,7 +49,7 @@ public partial class GenericError : IAsyncDisposable
 
 	private async Task EnsureJsModuleAsync()
 	{
-		_jsModule ??= await JsRuntime.ImportModuleAsync("./Layout/GenericError.razor.js");
+		_jsModule ??= await JsRuntime.ImportModuleAsync("./Components/Layout/GenericError.razor.js");
 	}
 
 	private async Task HandleCopyExceptionDetailsToClipboardClick()
