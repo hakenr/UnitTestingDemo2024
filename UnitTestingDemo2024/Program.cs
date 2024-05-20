@@ -1,8 +1,12 @@
+using Havit.Blazor.Components.Web;
 using UnitTestingDemo2024.Components;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+builder.Services.AddHxServices();
+builder.Services.AddHxMessenger();
+builder.Services.AddHxMessageBoxHost();
+
 builder.Services.AddRazorComponents()
 	.AddInteractiveServerComponents();
 

@@ -5,14 +5,17 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <base href="/" />
-    <link rel="stylesheet" href="app.css" />
+    @((MarkupString)HxSetup.RenderBootstrapCssReference())
+    <link href="_content/Havit.Blazor.Components.Web.Bootstrap/defaults.css" rel="stylesheet" />
     <link rel="stylesheet" href="UnitTestingDemo2024.styles.css" />
+    <link rel="stylesheet" href="app.css" />
     <HeadOutlet @rendermode="InteractiveServer" />
 </head>
 
 <body>
     <Routes @rendermode="InteractiveServer" />
     <script src="_framework/blazor.web.js"></script>
+    @((MarkupString)HxSetup.RenderBootstrapJavaScriptReference())
 </body>
 
 </html>
